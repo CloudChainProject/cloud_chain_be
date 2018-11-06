@@ -23,11 +23,11 @@ module.exports = {
 
 const sendToken = async(user)=>{
   return new Promise(async (resolve,reject)=>{
-    const result = await UsersSchema.findOne({email: user.email, username:user.username }).select(['password', 'email', 'token', 'name']);
+    const result = await UsersSchema.findOne({email: user.email, username:user.username }).select(['password', 'email', 'token', 'username']);
     if(result === null) return reject({'status':401, 'message':'Unauthorized'});
     if(bcrypt.compareSync(user.password, result.password)) {
       //TODO log
-      return resolve({'_status': 'logged', 'token': result.token, 'id': result._id, 'type': 'user', 'name': result.name});
+      return resolve({'_status': 'logged', 'token': result.token, 'id': result._id, 'type': 'user', 'name': result.username});
     } else {
       console.log('io');
       return reject({'status':401, 'message':'Unauthorized'});
